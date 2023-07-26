@@ -2,6 +2,7 @@ from ursina import *
 import random
 from random import uniform
 
+
 app = Ursina()
 score = 0
 missed = 0
