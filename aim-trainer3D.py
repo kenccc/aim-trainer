@@ -2,7 +2,8 @@ from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 from random import uniform
 app = Ursina()
-
+totalClicks = 0
+score = 0
 class Voxel(Button):
     def __init__(self, position = (0,0,0)):
         super().__init__(
@@ -13,7 +14,23 @@ class Voxel(Button):
             texture = 'white_cube',
             color = color.white,
             highlight_color = color.lime,
-                    )
+         )
+def display_results():
+    window = WindowPanel(title=f"Score: {score}\n Missed: {totalClicks - score}")
+    def close_panel():
+        window.close()
+        application.quit()
+
+    invoke(close_panel, delay=2)
+
+def input(key):
+    print(key)
+    if key == "escape" or key =="f4":
+        display_results()
+    if key == "left mouse down":
+        global totalClicks
+        totalClicks += 1
+
 class Target(Button):
     def __init__(self , position = (12,2,12), scale = 0.7):
         super().__init__(
@@ -26,6 +43,8 @@ class Target(Button):
             highlight_color = color.yellow,
         )
     def on_click(self):
+        global score
+        score += 1
         newX = uniform(5.5,16.5)
         newY = uniform(1, 2.8)
         self.position = (newX,newY)
@@ -74,6 +93,7 @@ class WallY2(Entity):
             texture = "white_cube",
             collider = "box"
         )
+
 wally1 = WallY1()
 wally2 = WallY2()
 wallx1 = WallX1()
