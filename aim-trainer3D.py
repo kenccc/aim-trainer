@@ -94,6 +94,20 @@ class WallY2(Entity):
             collider = "box"
         )
 
+class Sky(Entity):
+    def __init__(self):
+        super().__init__(
+            parent = scene,
+            model = "sphere",
+            scale= 150,
+            texture = "sky_default",
+            position = (12,2,12),
+            double_sided=True
+        )
+
+
+sky = Sky()
+
 wally1 = WallY1()
 wally2 = WallY2()
 wallx1 = WallX1()
