@@ -1,9 +1,11 @@
 from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
+from ursina.shaders import lit_with_shadows_shader
 from random import uniform
 app = Ursina()
 totalClicks = 0
 score = 0
+
 class Voxel(Button):
     def __init__(self, position = (0,0,0)):
         super().__init__(
@@ -14,9 +16,12 @@ class Voxel(Button):
             texture = 'white_cube',
             color = color.white,
             highlight_color = color.lime,
+            shader=lit_with_shadows_shader,
          )
 def display_results():
-    window = WindowPanel(title=f"Score: {score}\n Missed: {totalClicks - score}")
+    calc = 100/totalClicks
+    window = WindowPanel(title=f"Score: {score}\n Missed: {totalClicks - score}",
+                         content= f"Accuracy: {totalClicks/score}%")
     def close_panel():
         window.close()
         application.quit()
@@ -39,6 +44,7 @@ class Target(Button):
             model = "sphere",
             origin_y = 0.5,
             scale= scale,
+            shader=lit_with_shadows_shader,
             color= color.white,
             highlight_color = color.yellow,
         )
@@ -58,7 +64,8 @@ class WallX1(Entity):
             position = position,
             color = color.gray,
             texture = "white_cube",
-            collider = "box"
+            collider = "box",
+            shader=lit_with_shadows_shader
         )
 class WallX2(Entity):
     def __init__(self,position=(14.5,0,-3)):
@@ -69,7 +76,8 @@ class WallX2(Entity):
             position = position,
             color = color.gray,
             texture = "white_cube",
-            collider = "box"
+            collider = "box",
+            shader=lit_with_shadows_shader
         )
 class WallY1(Entity):
     def __init__(self,position=(0,0,5)):
@@ -80,7 +88,8 @@ class WallY1(Entity):
             position = position,
             color = color.gray,
             texture = "white_cube",
-            collider = "box"
+            collider = "box",
+            shader=lit_with_shadows_shader
         )
 class WallY2(Entity):
     def __init__(self,position=(29.5,0,6)):
@@ -91,7 +100,8 @@ class WallY2(Entity):
             position = position,
             color = color.gray,
             texture = "white_cube",
-            collider = "box"
+            collider = "box",
+            shader=lit_with_shadows_shader
         )
 
 class Sky(Entity):
