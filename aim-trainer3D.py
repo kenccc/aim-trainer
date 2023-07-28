@@ -77,17 +77,19 @@ class Sky(Entity):
             scale= 150,
             texture = "sky_default",
             position = (12,2,12),
-            double_sided=True
+            double_sided=True,
+            shader = lit_with_shadows_shader,
         )
 
 #calling the classes
-wallx1 = Wall()
+
 sky = Sky()
+wallx1 = Wall()
 wallx2 = Wall(position=(14.5,0,-3))
 wally1 = Wall(position=(0,0,5),scale=yScale)
 wally2 = Wall(position=(29.5,0,6),scale=yScale)
-player = FirstPersonController(position=(12,2,0))
 target = Target()
+player = FirstPersonController(position=(12,3,0))
 
 #creating the floor
 for z in range(15):
