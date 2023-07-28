@@ -2,10 +2,14 @@ from ursina import *
 from ursina.prefabs.first_person_controller import FirstPersonController
 from ursina.shaders import lit_with_shadows_shader
 from random import uniform
+
+#definig variables
 app = Ursina()
 totalClicks = 0
 score = 0
+yScale = (0.1, 10, 15)
 
+#creating classes and functions
 class Voxel(Button):
     def __init__(self, position = (0,0,0)):
         super().__init__(
@@ -19,15 +23,14 @@ class Voxel(Button):
             shader=lit_with_shadows_shader,
          )
 def display_results():
-    calc = 100/totalClicks
-    window = WindowPanel(title=f"Score: {score}\n Missed: {totalClicks - score}",
+    num = score/totalClicks
+    window = WindowPanel(title=f"Score: {score}\n Missed: {totalClicks - score}, Accuracy: {int(num*100)}%",
                          content= f"Accuracy: {totalClicks/score}%")
     def close_panel():
         window.close()
         application.quit()
 
     invoke(close_panel, delay=2)
-
 def input(key):
     print(key)
     if key == "escape" or key =="f4":
@@ -35,7 +38,6 @@ def input(key):
     if key == "left mouse down":
         global totalClicks
         totalClicks += 1
-
 class Target(Button):
     def __init__(self , position = (12,2,12), scale = 0.7):
         super().__init__(
@@ -55,55 +57,18 @@ class Target(Button):
         newY = uniform(1, 2.8)
         self.position = (newX,newY)
         self.scale = uniform(0.3,0.7)
-class WallX1(Entity):
-    def __init__(self,position=(14.5,0,15)):
+class Wall(Entity):
+    def __init__(self,position=(14.5,0,15), scale = (30, 10, 5)):
         super().__init__(
             parent = scene,
             model = "cube",
-            scale = (30, 10, 5),
+            scale = scale,
             position = position,
             color = color.gray,
             texture = "white_cube",
             collider = "box",
             shader=lit_with_shadows_shader
         )
-class WallX2(Entity):
-    def __init__(self,position=(14.5,0,-3)):
-        super().__init__(
-            parent = scene,
-            model = "cube",
-            scale = (30, 10, 5),
-            position = position,
-            color = color.gray,
-            texture = "white_cube",
-            collider = "box",
-            shader=lit_with_shadows_shader
-        )
-class WallY1(Entity):
-    def __init__(self,position=(0,0,5)):
-        super().__init__(
-            parent = scene,
-            model = "cube",
-            scale = (0.1, 10, 15),
-            position = position,
-            color = color.gray,
-            texture = "white_cube",
-            collider = "box",
-            shader=lit_with_shadows_shader
-        )
-class WallY2(Entity):
-    def __init__(self,position=(29.5,0,6)):
-        super().__init__(
-            parent = scene,
-            model = "cube",
-            scale = (0.1, 10, 15),
-            position = position,
-            color = color.gray,
-            texture = "white_cube",
-            collider = "box",
-            shader=lit_with_shadows_shader
-        )
-
 class Sky(Entity):
     def __init__(self):
         super().__init__(
@@ -115,18 +80,19 @@ class Sky(Entity):
             double_sided=True
         )
 
-
+#calling the classes
+wallx1 = Wall()
 sky = Sky()
-
-wally1 = WallY1()
-wally2 = WallY2()
-wallx1 = WallX1()
-wallx2 = WallX2()
+wallx2 = Wall(position=(14.5,0,-3))
+wally1 = Wall(position=(0,0,5),scale=yScale)
+wally2 = Wall(position=(29.5,0,6),scale=yScale)
+player = FirstPersonController(position=(12,2,0))
 target = Target()
 
+#creating the floor
 for z in range(15):
     for x in range(30):
         voxel = Voxel(position=(x,0,z),)
 
-player = FirstPersonController(position=(12,2,0))
+#running the app
 app.run()
