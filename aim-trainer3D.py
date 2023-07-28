@@ -3,7 +3,7 @@ from ursina.prefabs.first_person_controller import FirstPersonController
 from ursina.shaders import lit_with_shadows_shader
 from random import uniform
 
-#definig variables
+#defining variables
 app = Ursina()
 totalClicks = 0
 score = 0
